@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+
+
+</h:head>
+
+<style type="text/css">
+
+
+    .fontdef
+    {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 20px;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        font-style: normal;
+        font-variant: normal;
+        text-transform: capitalize;
+    }
+
+</style>
+<h:body style="transform: scale(0.8);position:absolute;left: -10%; top: -27%;display: flex;justify-content: center;">
+    <nav style="flex: 0 1 auto;">
+        <ui:insert name="content" >
+            <ui:include src="../menu.xhtml" />
+        </ui:insert>
+    </nav>
+    <div style="width: 100%;flex: 1 1 auto;">
+         <h:form >
+         <p:panelGrid columns="2" layout="grid"  >
+          <h:outputText   styleClass="fontdef" style="margin-top: 25%; margin-left: 30%"  value="Платформа : *" />
+              <p:selectOneMenu  style="width:300px" id="console" value="#{listgames.newGame.platform}"   converter="#{platformConverter}" >
+                  <f:selectItems  value="#{listplatform.platformList}" var="s"
+                                 itemValue="#{s}" itemLabel="#{s.name}" />
+              </p:selectOneMenu>
+
+
+          <h:outputText  styleClass="fontdef"  style="margin-top: 25%; margin-left: 30%"  value="Бюджет : *" />
+              <p:inputNumber  tyle="width:300px"  value="#{listgames.newGame.budget}" symbolPosition="s"
+                             />
+          <h:outputText  styleClass="fontdef"   style="margin-top: 25%; margin-left: 30%"   value="Имя : *" />
+              <p:inputText style="width:300px"  value="#{listgames.newGame.name}" required="true"/>
+          <h:outputText  styleClass="fontdef"    style="margin-top: 25%; margin-left: 30%"  value="Жанр:" />
+            <p:selectManyMenu style="width: 300px"   value="#{listgames.newGame.listGenre}" converter="#{genreConvertor}"
+                             var="t"   showCheckbox="true">
+              <f:selectItems  value="#{listgenres.all_games}" var="theme" itemLabel="#{theme.name}" itemValue="#{theme}"/>
+              <p:column >
+                  <h:outputText  styleClass="fontdef"   value="#{t.name}" />
+              </p:column>
+            </p:selectManyMenu>
+
+             <h:outputText  styleClass="fontdef"    style="margin-top: 25%; margin-left: 30%"  value="Начало разработки:" />
+             <p:datePicker id="disabledDD" value="#{listgames.newGame.start}"
+                           beforeShow="true"/>
+      </p:panelGrid>
+
+           <h:outputText  styleClass="fontdef"  style="margin-bottom: 15%;margin-left: 45%"   value="Сотрудники:" />
+           <p:dataTable  scrollHeight="500px" var="empl"    value="#{listemployees.employeeList}"
+                         selection="#{listgames.newGame.listEmployes}"  rowKey="#{empl.id}"  >
+                  <p:column style="width: 15px" selectionMode="multiple" />
+                  <p:ajax event="rowEdit" listener="#{listemployees.onRowEdit}" />
+
+                  <p:column headerText="Имя">
+                              <h:outputText value="#{empl.name}"/>
+                  </p:column>
+                  <p:column headerText="Зарплата">
+                              <h:outputText value="#{empl.salary}"/>
+                  </p:column>
+                  <p:column headerText="Опыт работ">
+                              <h:outputText value="#{empl.countYears}"/>
+                  </p:column>
+                  <p:column headerText="Режим работы">
+                              <h:outputText value="#{empl.workMode.name}"/>
+                  </p:column>
+
+                  <p:column headerText="Должность">
+                              <h:outputText value="#{empl.position.name}"/>
+                  </p:column>
+                  <p:column style="width: auto"  headerText="Начало работы">
+                      <h:outputText value="#{empl.startWork}">
+                          <f:convertDateTime pattern="dd.MM.yyyy " />
+                      </h:outputText>
+                  </p:column>
+                  <p:column style="width: 10px" >
+                      <p:rowEditor />
+                  </p:column>
+               <p:commandButton    value="button" type="submit" action="#{listgames.createNew}" />
+
+           </p:dataTable>
+
+       </h:form>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+
+
+</h:head>
+
+<style type="text/css">
+
+
+    .fontdef
+    {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 20px;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        font-style: normal;
+        font-variant: normal;
+        text-transform: capitalize;
+    }
+
+</style>
+<h:body style="display: flex;justify-content: center;">
+    <nav style="flex: 0 1 auto;">
+        <ui:insert name="content" >
+            <ui:include src="../menu.xhtml" />
+        </ui:insert>
+    </nav>
+    <div style="width: 100%;flex: 0 1 auto;">
+        <h:form >
+            <p:panelGrid columns="2" layout="grid"  >
+
+                <h:outputText  styleClass="fontdef"   style="margin-top: 25%; margin-left: 30%"   value="Имя : *" />
+                <p:inputText style="width:150px"  value="#{listcandidates.newGame.name}" required="true"/>
+
+                <h:outputText  styleClass="fontdef"   style="margin-top: 25%; margin-left: 30%"   value="Последнее место работы: *" />
+                <p:inputText style="width:150px"  value="#{listcandidates.newGame.lastWork}" required="true"/>
+
+                <h:outputText  styleClass="fontdef"  style="margin-top: 25%; margin-left: 30%"  value="Зарплата : *" />
+                <p:inputNumber  tyle="width:150px"  value="#{listcandidates.newGame.salary}" symbolPosition="s"  />
+
+                <h:outputText  styleClass="fontdef"  style="margin-top: 25%; margin-left: 30%"  value="Опыт работы : *" />
+                <p:inputNumber  tyle="width:150px"  value="#{listcandidates.newGame.countYears}" symbolPosition="s"  />
+
+                <h:outputText   styleClass="fontdef" style="margin-top: 25%; margin-left: 30%"  value="Должность : *" />
+                <p:selectOneMenu  style="width:150px"  value="#{listcandidates.newGame.position}"   converter="#{positionConverter}" >
+                    <f:selectItems  value="#{listPosition.positionList}" var="s"
+                                    itemValue="#{s}" itemLabel="#{s.name}" />
+                </p:selectOneMenu>
+
+                <h:outputText   styleClass="fontdef" style="margin-top: 25%; margin-left: 30%"  value="Этап собеседования : *" />
+                <p:selectOneMenu  style="width:150px" id="console" value="#{listcandidates.newGame.interview_stage}"   converter="#{interviewConverter}" >
+                    <f:selectItems  value="#{listinterview.interviewStageList}" var="s"
+                                    itemValue="#{s}" itemLabel="#{s.name}" />
+                </p:selectOneMenu>
+
+                <p:commandButton    value="Добавить" type="submit" action="#{listcandidates.createNew}" />
+
+            </p:panelGrid>
+        </h:form>
+    </div>
+</h:body>
+</html>

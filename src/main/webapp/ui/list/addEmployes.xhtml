@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+
+
+</h:head>
+
+<style type="text/css">
+
+
+    .fontdef
+    {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 20px;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        font-style: normal;
+        font-variant: normal;
+        text-transform: capitalize;
+    }
+
+</style>
+<h:body style="display: flex;justify-content: center;">
+    <nav style="flex: 0 1 auto;">
+        <ui:insert name="content" >
+            <ui:include src="../menu.xhtml" />
+        </ui:insert>
+    </nav>
+    <div style="width: 50%;flex: 0 1 auto;">
+        <h:form >
+            <p:panelGrid columns="2" layout="grid"  >
+
+                <h:outputText  styleClass="fontdef"   style="margin-top: 25%; margin-left: 30%"   value="Имя : *" />
+                <p:inputText style="width:150px"  value="#{listemployees.newEmpl.name}" required="true"/>
+
+                <h:outputText  styleClass="fontdef"  style="margin-top: 25%; margin-left: 30%"  value="Зарплата : *" />
+                <p:inputNumber  tyle="width:150px"  value="#{listemployees.newEmpl.salary}" symbolPosition="s"   />
+
+                <h:outputText  styleClass="fontdef"  style="margin-top: 25%; margin-left: 30%"  value="Опыт работы : *" />
+                <p:inputNumber  tyle="width:150px"  value="#{listemployees.newEmpl.countYears}" symbolPosition="s"   />
+
+                <h:outputText   styleClass="fontdef" style="margin-top: 25%; margin-left: 30%"  value="Должность : *" />
+                <p:selectOneMenu style="width:150px" value="#{listemployees.newEmpl.position}" converter="#{positionConverter}" >
+                    <f:selectItems  value="#{listPosition.positionList}" var="s"
+                                    itemValue="#{s}" itemLabel="#{s.name}" />
+                </p:selectOneMenu>
+
+                <h:outputText   styleClass="fontdef" style="margin-top: 25%; margin-left: 30%"  value="Режим работы : *" />
+                <p:selectOneMenu  style="width:150px" id="console" value="#{listemployees.newEmpl.workMode}"   converter="#{WorkModeConverter}" >
+                    <f:selectItems value="#{listworkmodes.workModes}" var="s"
+                                   itemValue="#{s}" itemLabel="#{s.name}" />
+                </p:selectOneMenu>
+
+                <h:outputText  styleClass="fontdef"    style="margin-top: 25%; margin-left: 30%"  value="Начало работы:" />
+                <p:datePicker id="disabledDD" value="#{listemployees.newEmpl.startWork}"
+                              readonlyInput="true"/>
+            </p:panelGrid>
+
+            <p:commandButton    value="button" type="submit" action="#{listemployees.createNew}" />
+
+        </h:form>
+    </div>
+</h:body>
+</html>

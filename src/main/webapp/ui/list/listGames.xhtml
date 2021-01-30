@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	</link>
+
+	<style>
+
+		iframe.seamless{
+			background-color: transparent;
+			border: 0px none transparent;
+			padding: 0px;
+			overflow: hidden;
+		}
+		.fontdef
+		{
+			font-family: "Comic Sans MS", cursive, sans-serif;
+			font-size: 13px;
+			letter-spacing: 1px;
+			word-spacing: 3px;
+			color: #000000;
+			font-weight: 400;
+			text-decoration: none;
+			font-style: normal;
+			font-variant: normal;
+			text-transform: capitalize;
+		}
+	</style>
+</h:head>
+
+<h:body  style="transform: scale(0.8);position:absolute;left: -10%; top: -5%;  display: flex;justify-content: center;">
+
+		<nav id="sidebarMenu"  style=" flex: 0 1 auto;" class=" ">
+			<ui:insert name="content" >
+				<ui:include src="../menu.xhtml" />
+			</ui:insert>
+		</nav>
+        <div  style="flex:3 1 auto;">
+			<h:form id="form">
+				<p:growl id="msgs" showDetail="true"/>
+					<p:dataTable  style="width:105%;" value="#{listgames.listGames}" scrollable="true" scrollHeight="800" editable="true" var="game">
+
+						<p:ajax process="@this" execute="@this" event="rowEdit" listener="#{listgames.onRowEdit}" update=":form:msgs"  />
+
+						<p:column  headerText="Название">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.name}"/>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText style="width:300px"  value="#{game.name}" required="true"/>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column  headerText="Бюджет">
+							<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText style="width:100%" value="#{game.budget}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputNumber  style="width:300px"  value="#{game.budget}" symbolPosition="s"
+												decimalSeparator="," />
+							</f:facet>
+						</p:cellEditor>
+						</p:column>
+						<p:column headerText="Прибыль">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.profit}"/>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputNumber  style="width:300px"  value="#{game.profit}" symbolPosition="s" decimalSeparator="," />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column  width="5%" headerText="Оценка">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.number}"/>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputNumber  tyle="width:300px"  value="#{game.number}" symbolPosition="s" decimalSeparator="," />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column  width="15%" headerText="Жанр" >
+							<p:cellEditor >
+								<f:facet name="output">
+									<ui:repeat value="#{game.listGenre}" var="genre">
+										<h:outputText style="width:100%"  value="#{genre.name}" /><br/>
+									</ui:repeat>
+								</f:facet>
+							   <f:facet name="input">
+									<p:selectManyMenu  style="width:100%"  collectionType="java.util.ArrayList"  value="#{game.listGenre}" converter="#{genreConvertor}" var="t"   showCheckbox="true">
+										<f:selectItems  value="#{listgenres.all_games}" var="theme" itemLabel="#{theme.name}" itemValue="#{theme}"/>
+										<p:column >
+											<h:outputText    style="width:100%"  value="#{t.name}" />
+										</p:column>
+									</p:selectManyMenu>
+							   </f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width:10%"  headerText="Команда" >
+							<p:commandButton  style="width:100%" value="Показать"  action="#{listgames.showTeam(game.id)}"  />
+
+						</p:column>
+
+						<p:column  headerText="Платформа">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText  style="width:100%" value="#{game.platform.name}"/>
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu  style="width:300px" id="console" value="#{game.platform}"   converter="#{platformConverter}" >
+										<f:selectItems  value="#{listplatform.platformList}" var="s"
+														itemValue="#{s}" itemLabel="#{s.name}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column  headerText="Статус разработки">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.status.name}"/>
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu  style="width:300px"  value="#{game.status}"   converter="#{statusConverter}" >
+										<f:selectItems  value="#{liststatus.statusList}" var="s"
+														itemValue="#{s}" itemLabel="#{s.name}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Начало разработки">
+							<p:cellEditor>
+							   <f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.start}">
+										<f:convertDateTime pattern="dd.MM.yyyy " />
+									</h:outputText>
+							   </f:facet>
+							   <f:facet name="input">
+								   <p:datePicker id="disabledDD" value="#{game.start}"
+												 beforeShow="true"/>
+							   </f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Дата релиза">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText style="width:100%" value="#{game.end}">
+										<f:convertDateTime pattern="dd.MM.yyyy " />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:datePicker value="#{game.end}" beforeShow="true"/>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:8%" >
+							<h:commandButton value="Удалить" action="#{listgames.delete(game)}" />
+						</p:column>
+						<p:column style="width:30px">
+							<p:rowEditor />
+						</p:column>
+
+					</p:dataTable>
+			</h:form>
+			<p:linkButton value="Добавить" style="width:100%" outcome="addGame"  />
+            </div>
+
+    </h:body>
+    </html>
